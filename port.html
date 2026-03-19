@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prasamsha Dahal</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a26;--bg4:#20202e;
+    --accent:#7c6df2;--accent2:#a99bf7;--accent3:#6355d4;
+    --text:#eeeaf8;--muted:#8884a0;--border:#2a2840;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+
+  /* NAV */
+  nav{position:fixed;top:0;width:100%;z-index:100;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+  .logo{font-size:1.1rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .nav-links{display:flex;gap:32px;list-style:none}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:.9rem;transition:color .2s}
+  .nav-links a:hover{color:var(--accent2)}
+
+  /* HERO */
+  #hero{min-height:100vh;display:flex;align-items:center;padding:100px 6% 60px;background:var(--bg);position:relative;overflow:hidden}
+  #hero::before{content:'';position:absolute;top:-200px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(124,109,242,.12),transparent 70%);pointer-events:none}
+  .hero-inner{display:grid;grid-template-columns:1fr 400px;gap:60px;align-items:center;max-width:1100px;margin:0 auto;width:100%}
+  .hero-tag{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;background:rgba(124,109,242,.1);border:1px solid rgba(124,109,242,.25);border-radius:30px;font-size:.8rem;color:var(--accent2);margin-bottom:28px;letter-spacing:.3px}
+  .hero-tag span{width:7px;height:7px;border-radius:50%;background:var(--accent2);display:inline-block;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+  h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;line-height:1.1;margin-bottom:20px}
+  h1 .name{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero-sub{font-size:1rem;color:var(--muted);margin-bottom:36px;max-width:480px;line-height:1.8}
+  .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{padding:12px 26px;border-radius:10px;text-decoration:none;font-size:.9rem;font-weight:600;transition:all .22s;cursor:pointer;border:none;display:inline-block}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 18px rgba(124,109,242,.35)}
+  .btn-primary:hover{background:var(--accent3);transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,109,242,.45)}
+  .btn-outline{background:transparent;color:var(--accent2);border:1.5px solid rgba(124,109,242,.4)}
+  .btn-outline:hover{background:rgba(124,109,242,.1);transform:translateY(-2px)}
+
+  /* PHOTO */
+  .hero-photo-wrap{display:flex;justify-content:center;align-items:center}
+  .hero-photo-outer{position:relative;width:340px;height:400px}
+  .photo-blob{position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,109,242,.2),rgba(169,155,247,.1));border-radius:60% 40% 55% 45% / 50% 55% 45% 50%;z-index:0;animation:morph 8s ease-in-out infinite alternate}
+  .photo-ring{position:absolute;inset:-8px;border:1.5px solid rgba(124,109,242,.25);border-radius:60% 40% 55% 45% / 50% 55% 45% 50%;z-index:0;animation:morph 8s ease-in-out infinite alternate}
+  @keyframes morph{0%{border-radius:60% 40% 55% 45% / 50% 55% 45% 50%}100%{border-radius:45% 55% 42% 58% / 55% 45% 55% 45%}}
+  .hero-photo{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;object-position:center 35%;border-radius:60% 40% 55% 45% / 50% 55% 45% 50%;animation:morph 8s ease-in-out infinite alternate}
+  .photo-badge{position:absolute;bottom:20px;right:-10px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:10px 14px;z-index:2;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+  .badge-num{font-size:1.2rem;font-weight:800;color:var(--accent2)}
+  .badge-text{font-size:.7rem;color:var(--muted)}
+
+  /* SECTIONS */
+  section{padding:90px 6%}
+  .section-inner{max-width:1100px;margin:0 auto}
+  .section-label{font-size:.72rem;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:10px;font-weight:600}
+  .section-title{font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:800;margin-bottom:12px}
+  .section-sub{color:var(--muted);max-width:500px;margin-bottom:50px}
+
+  /* ABOUT */
+  #about{background:var(--bg2)}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+  .about-text p{color:var(--muted);margin-bottom:16px;line-height:1.85}
+  .about-text p strong{color:var(--text);font-weight:600}
+  .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .skill-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+  .skill-cat{font-size:.68rem;color:var(--accent);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px;font-weight:600}
+  .skill-tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{padding:4px 11px;background:rgba(124,109,242,.1);border:1px solid rgba(124,109,242,.2);border-radius:14px;font-size:.75rem;color:var(--accent2);font-weight:500}
+
+  /* EDUCATION */
+  #education{background:var(--bg)}
+  .edu-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:32px;display:flex;gap:24px;align-items:flex-start;max-width:700px;box-shadow:0 4px 24px rgba(0,0,0,.3)}
+  .edu-logo{width:60px;height:60px;border-radius:12px;background:#e87722;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.7rem;font-weight:900;color:#fff;text-align:center;line-height:1.2;letter-spacing:.5px}
+  .edu-info{}
+  .edu-school{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px}
+  .edu-degree{font-size:.9rem;color:var(--accent2);margin-bottom:4px;font-weight:500}
+  .edu-date{font-size:.8rem;color:var(--muted);margin-bottom:12px}
+  .edu-badges{display:flex;flex-wrap:wrap;gap:8px}
+  .edu-badge{padding:5px 12px;background:rgba(124,109,242,.1);border:1px solid rgba(124,109,242,.2);border-radius:10px;font-size:.78rem;color:var(--accent2)}
+
+  /* EXPERIENCE */
+  #experience{background:var(--bg2)}
+  .timeline{position:relative;padding-left:32px;max-width:780px}
+  .timeline::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),var(--accent2),var(--border))}
+  .tl-item{position:relative;margin-bottom:40px}
+  .tl-dot{position:absolute;left:-40px;top:18px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid var(--bg2);box-shadow:0 0 0 2px var(--accent)}
+  .tl-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:26px;transition:box-shadow .2s,border-color .2s}
+  .tl-card:hover{box-shadow:0 6px 30px rgba(124,109,242,.15);border-color:rgba(124,109,242,.3)}
+  .tl-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;flex-wrap:wrap;gap:8px}
+  .tl-company{font-size:1.05rem;font-weight:700;color:var(--text)}
+  .tl-role{font-size:.85rem;color:var(--accent2);margin-bottom:6px;font-weight:500}
+  .tl-date{font-size:.78rem;color:var(--muted);background:var(--bg4);padding:4px 12px;border-radius:8px;white-space:nowrap;border:1px solid var(--border)}
+  .tl-card ul{padding-left:18px;margin-top:8px}
+  .tl-card li{color:var(--muted);font-size:.88rem;margin-bottom:8px;line-height:1.7}
+  .tl-card li strong{color:var(--accent2);font-weight:600}
+
+  /* CERTIFICATIONS */
+  #certifications{background:var(--bg)}
+  .certs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .cert-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;gap:16px;align-items:flex-start;transition:all .22s}
+  .cert-card:hover{border-color:rgba(124,109,242,.4);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  .cert-logo{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.65rem;font-weight:900;color:#fff;text-align:center;line-height:1.2}
+  .cert-logo.palantir{background:#1a1a2e;border:1px solid #333}
+  .cert-logo.utd{background:#e87722}
+  .cert-logo.ibm{background:#1d70b8}
+  .cert-info{}
+  .cert-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.4}
+  .cert-issuer{font-size:.8rem;color:var(--accent2);margin-bottom:2px;font-weight:500}
+  .cert-date{font-size:.75rem;color:var(--muted);margin-bottom:6px}
+  .cert-id{font-size:.72rem;color:var(--muted);font-family:monospace}
+
+  /* PROJECTS */
+  #projects{background:var(--bg2)}
+  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .proj-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .25s;position:relative;overflow:hidden}
+  .proj-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:0;transition:opacity .25s}
+  .proj-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.4);border-color:rgba(124,109,242,.3)}
+  .proj-card:hover::after{opacity:1}
+  .proj-icon{width:46px;height:46px;border-radius:12px;background:rgba(124,109,242,.1);border:1px solid rgba(124,109,242,.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:18px}
+  .proj-title{font-size:1rem;font-weight:700;margin-bottom:5px}
+  .proj-stack{font-size:.76rem;color:var(--accent2);margin-bottom:12px;font-weight:500}
+  .proj-desc{color:var(--muted);font-size:.87rem;line-height:1.75;margin-bottom:16px}
+  .proj-metrics{display:flex;flex-wrap:wrap;gap:7px}
+  .metric{padding:4px 10px;background:rgba(124,109,242,.08);border:1px solid rgba(124,109,242,.18);border-radius:8px;font-size:.73rem;color:var(--accent2);font-weight:500}
+
+  /* CONTACT */
+  #contact{background:var(--bg3)}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+  .contact-info p{color:var(--muted);margin-bottom:28px;line-height:1.85}
+  .contact-links{display:flex;flex-direction:column;gap:12px}
+  .contact-link{display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--bg4);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);transition:all .2s}
+  .contact-link:hover{border-color:rgba(124,109,242,.4);transform:translateX(6px);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+  .contact-link-text{font-size:.9rem;font-weight:600}
+  .contact-link-sub{font-size:.78rem;color:var(--muted)}
+  .contact-form{background:var(--bg4);border:1px solid var(--border);border-radius:16px;padding:32px}
+  .form-group{margin-bottom:18px}
+  .form-group label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:7px;font-weight:500}
+  .form-group input,.form-group textarea{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-size:.9rem;font-family:inherit;transition:border-color .2s;resize:none}
+  .form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--accent)}
+  .form-success{display:none;text-align:center;padding:30px;color:var(--accent2);font-size:.95rem}
+
+  footer{text-align:center;padding:40px 6%;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem;background:var(--bg)}
+
+  @media(max-width:900px){
+    .hero-inner{grid-template-columns:1fr;text-align:center}
+    .hero-photo-wrap{display:none}
+    .hero-sub,.section-sub{margin-left:auto;margin-right:auto}
+    .hero-btns{justify-content:center}
+    .about-grid,.contact-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){.nav-links{display:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Prasamsha Dahal</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-tag"><span></span> CS + Cognitive Science · UT Dallas</div>
+      <h1>Hi, I'm<br><span class="name">Prasamsha Dahal</span></h1>
+      <p class="hero-sub">Full-Stack Software Engineer & AI/ML enthusiast building scalable systems, intelligent pipelines, and real-time APIs. CS + Cognitive Science @ UT Dallas.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap">
+      <div class="hero-photo-outer">
+        <div class="photo-blob"></div>
+        <div class="photo-ring"></div>
+        <img id="heroPhoto" class="hero-photo" src="face.JPG" alt="Prasamsha Dahal">
+  
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">Who I Am</div>
+    <h2 class="section-title">About Me</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a <strong>Computer Science & Cognitive Science</strong> student at UT Dallas (graduating May 2026) with a micro-credential in Biobehavioral Data Science. I love building things at the intersection of software engineering and AI.</p>
+        <p>From deploying RAG-powered websites to building real-time fire detection systems and microservice fitness platforms — I thrive where <strong>backend depth meets intelligent design</strong>.</p>
+        <p>I've interned at <strong>Gamic Media</strong> (AI/ML SWE) and <strong>MindHome</strong> (ML Engineering), and I'm passionate about clean architecture, data pipelines, and shipping production-ready systems.</p>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-cat">Languages</div>
+          <div class="skill-tags"><span class="tag">Python</span><span class="tag">Java</span><span class="tag">TypeScript</span><span class="tag">C#</span><span class="tag">SQL</span><span class="tag">C++</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-cat">Frameworks</div>
+          <div class="skill-tags"><span class="tag">FastAPI</span><span class="tag">Spring Boot</span><span class="tag">React</span><span class="tag">ASP.NET</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-cat">AI / ML</div>
+          <div class="skill-tags"><span class="tag">GPT-4o</span><span class="tag">RAG</span><span class="tag">CNNs</span><span class="tag">XGBoost</span><span class="tag">SHAP</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-cat">Data & Cloud</div>
+          <div class="skill-tags"><span class="tag">PostgreSQL</span><span class="tag">Snowflake</span><span class="tag">AWS</span><span class="tag">Docker</span><span class="tag">Airflow</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-inner">
+    <div class="section-label">Academia</div>
+    <h2 class="section-title">Education</h2>
+    <p class="section-sub">Where I built my foundation in computer science and data science.</p>
+    <div class="edu-card">
+      <div class="edu-logo" style="background:#e87722;padding:0;overflow:hidden"><img src="Utd.jpg" style="width:100%;height:100%;object-fit:cover" alt="UTD"></div>
+      <div class="edu-info">
+        <div class="edu-school">The University of Texas at Dallas</div>
+        <div class="edu-degree">B.S. Computer Science / Cognitive Science</div>
+        <div class="edu-date">Aug 2022 – May 2026 · Richardson, TX</div>
+        <div class="edu-badges">
+          <span class="edu-badge">Micro-credential: Biobehavioral Data Science</span>
+          <span class="edu-badge">CS + Cognitive Science Double Major</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">Career</div>
+    <h2 class="section-title">Experience</h2>
+    <p class="section-sub">Internships where I've shipped real impact.</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div><div class="tl-company">Gamic Media</div><div class="tl-role">Software Engineering Intern — AI/ML Focus</div></div>
+            <div class="tl-date">Jan 2025 – Dec 2025</div>
+          </div>
+          <ul>
+            <li>Deployed full-stack <strong>gamic.us</strong> with RAG using GPT-4o mini + Qdrant — <strong>2,500+ monthly visitors</strong>.</li>
+            <li>Automated transcript ingestion via n8n workflows, cutting research time from <strong>60 min → 5 min (90% reduction)</strong>.</li>
+            <li>Built Pandas pipelines to clean and segment <strong>5,000+ CRM records</strong> across 8+ market categories.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div><div class="tl-company">MindHome</div><div class="tl-role">Machine Learning Engineer Intern</div></div>
+            <div class="tl-date">May 2024 – Aug 2024</div>
+          </div>
+          <ul>
+            <li>Built AI fire detection with CNNs, XGBoost & IR-camera fusion — <strong>sub-1.2s response times</strong>.</li>
+            <li>Orchestrated end-to-end ML pipelines using Python, Airflow, AWS, and Snowflake.</li>
+            <li>Improved reliability by <strong>35%</strong> and cut false positives by <strong>42%</strong> using SHAP/LIME.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-inner">
+    <div class="section-label">Credentials</div>
+    <h2 class="section-title">Licenses & Certifications</h2>
+    <p class="section-sub">Verified credentials from industry-leading organizations.</p>
+    <div class="certs-grid">
+
+      <div class="cert-card">
+        <div class="cert-logo palantir" style="padding:4px">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="10" stroke="#888" stroke-width="1.5"/><circle cx="16" cy="16" r="4" fill="#888"/></svg>
+        </div>
+        <div class="cert-info">
+          <div class="cert-title">Introduction to Foundry & AIP for Enterprise Organizations</div>
+          <div class="cert-issuer">Palantir Technologies</div>
+          <div class="cert-date">Issued Feb 2026</div>
+          <div class="cert-id">ID: usvc8zki32mq</div>
+        </div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-logo utd" style="padding:0;overflow:hidden"><img src="Utd.jpg" style="width:100%;height:100%;object-fit:cover" alt="UTD"></div>
+        <div class="cert-info">
+          <div class="cert-title">Biobehavioral Data Science</div>
+          <div class="cert-issuer">The University of Texas at Dallas</div>
+          <div class="cert-date">Issued May 2025</div>
+        </div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-logo ibm" style="font-size:.85rem;font-weight:900;letter-spacing:-.5px">IBM</div>
+        <div class="cert-info">
+          <div class="cert-title">Machine Learning with Python</div>
+          <div class="cert-issuer">IBM</div>
+          <div class="cert-date">Issued Nov 2024</div>
+          <div class="cert-id">ID: MAFHQEOFQAER</div>
+        </div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-logo ibm" style="font-size:.85rem;font-weight:900;letter-spacing:-.5px">IBM</div>
+        <div class="cert-info">
+          <div class="cert-title">Python for Data Science, AI & Development</div>
+          <div class="cert-issuer">IBM</div>
+          <div class="cert-date">Issued Nov 2024</div>
+          <div class="cert-id">ID: RXVSD83AQ5F1</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label">My Work</div>
+    <h2 class="section-title">Projects</h2>
+    <p class="section-sub">Production-quality systems built end-to-end.</p>
+    <div class="projects-grid">
+      <div class="proj-card">
+        <div class="proj-icon">🏋️</div>
+        <div class="proj-title">FitAI Microservices Platform</div>
+        <div class="proj-stack">Java · Spring Boot · React · Microservices</div>
+        <div class="proj-desc">Full-stack AI fitness platform with 6+ independent microservices, Eureka service discovery, JWT auth, and personalized workout recommendations in under 2 seconds.</div>
+        <div class="proj-metrics"><span class="metric">25+ REST APIs</span><span class="metric">1,000+ users</span><span class="metric">30% faster</span><span class="metric">40% engagement ↑</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-icon">📊</div>
+        <div class="proj-title">Real-Time Analytics API</div>
+        <div class="proj-stack">Python · FastAPI · PostgreSQL · TimescaleDB · Docker</div>
+        <div class="proj-desc">Scalable analytics REST API with TimescaleDB time-series optimization, SQLModel schemas, and modular architecture achieving 30–40% faster response vs Flask.</div>
+        <div class="proj-metrics"><span class="metric">15+ endpoints</span><span class="metric">100K+ records</span><span class="metric">35% query boost</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-icon">🗄️</div>
+        <div class="proj-title">Enterprise Data Management Portal</div>
+        <div class="proj-stack">C# · ASP.NET Core · React · SQL Server</div>
+        <div class="proj-desc">Full-stack CRUD app with Entity Framework migrations, optimized relational schemas, and responsive React frontend with 95%+ Lighthouse score.</div>
+        <div class="proj-metrics"><span class="metric">10+ endpoints</span><span class="metric">95%+ Lighthouse</span><span class="metric">30% faster</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-icon">🌐</div>
+        <div class="proj-title">gamic.us — RAG-Powered Website</div>
+        <div class="proj-stack">GPT-4o mini · Qdrant · n8n · Full-Stack</div>
+        <div class="proj-desc">Full-stack website with AI-powered RAG, automated document ingestion pipelines, and vector search — reducing manual research time by 90%.</div>
+        <div class="proj-metrics"><span class="metric">2,500+ visitors/mo</span><span class="metric">90% time saved</span><span class="metric">5K+ CRM records</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">Let's Talk</div>
+    <h2 class="section-title">Get In Touch</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p>I'm currently looking for new opportunities — whether it's a full-time role, internship, or an interesting project. My inbox is always open!</p>
+        <div class="contact-links">
+          <a href="mailto:prasamsha233@gmail.com" class="contact-link">
+            <span>✉️</span>
+            <div><div class="contact-link-text">Email</div><div class="contact-link-sub">prasamsha233@gmail.com</div></div>
+          </a>
+          <a href="https://www.linkedin.com/in/prasamsha-dahal/" target="_blank" class="contact-link">
+            <span>💼</span>
+            <div><div class="contact-link-text">LinkedIn</div><div class="contact-link-sub">linkedin.com/in/prasamsha-dahal</div></div>
+          </a>
+          <a href="https://github.com/Prasamsha2" target="_blank" class="contact-link">
+            <span>🐙</span>
+            <div><div class="contact-link-text">GitHub</div><div class="contact-link-sub">github.com/Prasamsha2</div></div>
+          </a>
+          <div class="contact-link" style="cursor:default">
+            <span>📍</span>
+            <div><div class="contact-link-text">Location</div><div class="contact-link-sub">Bedford, Texas · Open to Remote</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <div id="form-fields">
+          <div class="form-group"><label>Your Name</label><input type="text" id="fname" placeholder="Jane Smith"></div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="femail" placeholder="jane@company.com"></div>
+          <div class="form-group"><label>Message</label><textarea id="fmsg" rows="5" placeholder="Hi Prasamsha, I'd love to connect..."></textarea></div>
+          <button class="btn btn-primary" style="width:100%;padding:13px" onclick="handleSubmit()">Send Message</button>
+        </div>
+        <div class="form-success" id="form-success">✅ Thanks for reaching out! I'll get back to you soon.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p style="margin-bottom:6px">Designed & built by <strong>Prasamsha Dahal</strong> · Bedford, Texas</p>
+  <p>prasamsha233@gmail.com</p>
+</footer>
+
+<script>
+// Load the uploaded photo
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.type === 'photoUrl') {
+    document.getElementById('heroPhoto').src = e.data.url;
+  }
+});
+
+function handleSubmit(){
+  const n=document.getElementById('fname').value;
+  const e=document.getElementById('femail').value;
+  const m=document.getElementById('fmsg').value;
+  if(!n||!e||!m){alert('Please fill out all fields.');return;}
+  document.getElementById('form-fields').style.display='none';
+  document.getElementById('form-success').style.display='block';
+}
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}})
+},{threshold:0.1});
+document.querySelectorAll('.tl-card,.proj-card,.skill-card,.cert-card,.edu-card').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(20px)';
+  el.style.transition='opacity .5s ease, transform .5s ease';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>
